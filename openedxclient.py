@@ -27,12 +27,8 @@ INSTRUCTOR_RESOURCES = {
 }
 
 COURSE_RESOURCES = {
-    "create_course": {
-        "endpoint": "add_course",
-        "method": "POST"
-    },
-    "get_course_info": {
-        "endpoint": "get_course_details",
+    "get_course_details": {
+        "endpoint": "/api/courses/v1/courses/{course_id}",
         "method": "GET"
     },
 }
