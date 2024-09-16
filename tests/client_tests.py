@@ -8,8 +8,8 @@ class TestOpenEdxClient(unittest.TestCase):
         self.base_url = "http://example.com"
         self.course_id = "course-v1:edX+DemoX+T2024"
         self.edx_client = OpenEdxClient(self.base_url)
-        self.client_id = 'aa'
-        self.client_secret = 'bb'
+        self.client_id = 'test'
+        self.client_secret = 'sec'
 
     def test_instructor_client_creation(self):
         # Test creating an InstructorClient instance
