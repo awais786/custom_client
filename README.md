@@ -15,21 +15,13 @@ To use `InstructorClient` and `CourseClient`, ensure that both classes are inclu
 
 ```python
 from openedxclient import OpenEdxClient
-
-## Usage
-The InstructorClient provides an easy way to perform instructor-related operations on a specific course.
-
 headers = {'Authorization': 'JWT ' + accesstoken, 'X-CSRFToken' : csrftoken}  # generate token with superuser perms due to instructor requirments.
-
 api_client = OpenEdxClient(base_url='http://localhost:18000', headers=headers)
 ins_client = api_client.instructor(course_id='course-v1:edx+cs222+2015_t5')
 ins_client.role_members(data={'rolename': 'instructor'})
-
 # another url
 ins_client.student_progress_url(data={'unique_student_identifier': 'staff@example.com'})
-
 # The CourseClient provides an easy way to perform course-related operations on a specific course.
-
 course_client = api_client.course(course_id='course-v1:edx+cs222+2015_t5')
 course_client.get_course_details(headers=headers)
 
