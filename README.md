@@ -28,7 +28,7 @@ from openedxclient import OpenEdxClient
 # "grant_type": "client_credentials",
 # "client-type": "confidential"
 
-# Use your user name and password with is-superuser permissions or create a role in course access roles
+# service username must be is-superuser=True or create a role in course access roles.
 
 from openedxclient import OpenEdxClient
 base_url='http://localhost:18000/'
