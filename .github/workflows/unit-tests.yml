@@ -1,12 +1,12 @@
-name: Python Tests
+name: Tests Workflow
 
 on:
   push:
     branches:
-      - main
+      - '*'  # Runs on push events to any branch
   pull_request:
     branches:
-      - main
+      - '*'  # Runs on pull requests to any branch
 
 jobs:
   test:
