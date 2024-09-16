@@ -32,4 +32,4 @@ jobs:
     # Step 4: Run tests
     - name: Run tests
       run: |
-        python -m unittest tests -p '*_test.py'
+        python -m unittest  tests/client_tests.py
