@@ -14,14 +14,10 @@ This module contains specialized clients for interacting with instructor and cou
 To use `InstructorClient` and `CourseClient`, ensure that both classes are included in your project along with their dependency, `BaseClient`.
 
 ```python
-from instructor_client import InstructorClient
-from course_client import CourseClient
+from openedxclient import OpenEdxClient
 
 ## Usage
 The InstructorClient provides an easy way to perform instructor-related operations on a specific course.
-
-data =  {'unique_student_identifier':  'teststudent@gmail.com'} 
-headers = {"content-type": "application/json"}
 
 headers = {'Authorization': 'JWT ' + accesstoken, 'X-CSRFToken' : csrftoken}  # generate token with superuser perms due to instructor requirments.
 
