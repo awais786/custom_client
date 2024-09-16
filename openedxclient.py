@@ -4,7 +4,6 @@ Instructor and Course APIs. These clients provide a structured way to interact w
 endpoints related to course and instructor operations using the OpenEdxClient as the base API client.
 """
 
-
 import datetime
 import json
 import jwt
@@ -48,6 +47,7 @@ class BaseClient:
     BaseClient(api_client, course_id, resources)
     A base class for generating dynamic methods for API operations.
     """
+
     def __init__(self, api_client, course_id, resources):
         self.api_client = api_client
         self.course_id = course_id
@@ -64,6 +64,7 @@ class InstructorClient(BaseClient):
     This client inherits from BaseClient and automatically generates methods for interacting
     with instructor endpoints defined in the INSTRUCTOR_RESOURCES configuration.
     """
+
     def __init__(self, api_client, course_id):
         super().__init__(api_client, course_id, INSTRUCTOR_RESOURCES)
 
@@ -74,6 +75,7 @@ class CourseClient(BaseClient):
     This client inherits from BaseClient and automatically generates methods for interacting
     with course endpoints defined in the COURSE_RESOURCES configuration.
     """
+
     def __init__(self, api_client, course_id):
         super().__init__(api_client, course_id, COURSE_RESOURCES)
 
@@ -85,9 +87,44 @@ class OpenEdxClient:
     within the Open edX platform. It serves as the base client that can be extended by more specific
     clients, such as `InstructorClient` and `CourseClient`, to interact with different API resources.
     """
+
     def __init__(self, base_url, headers=None):
         self.base_url = base_url
-        self.headers = headers
+        self.headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+        self.accesstoken = None
+
+    def authenticate(self, username, password, client_id):
+        """
+        Authenticates a user and retrieves a JWT token.
+        """
+        response = requests.get(f"{self.base_url}/csrf/api/v1/token", headers=self.headers)
+        if response.status_code == 200:
+            data = response.json()
+            self.headers['X-CSRFToken'] = data.get('csrfToken')
+
+        payload = {
+            'username': username,
+            'password': password,
+            'client_id': client_id,
+            'grant_type': 'password',
+            'token_type': 'jwt'
+        }
+        self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        response = requests.post(f"{self.base_url}/oauth2/access_token", headers=self.headers, data=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            self.accesstoken = data.get('access_token')
+            self.headers['Authorization'] = f"JWT {self.accesstoken}"
+            self.headers['Content-Type'] = 'application/json'
+            print('Authentication works!!!')
+            return self
+        else:
+            print(f"Authentication failed: {response.status_code} {response.text}")
+            return None
 
     def get(self, endpoint, data=None):
         """Send a GET request."""
@@ -98,11 +135,6 @@ class OpenEdxClient:
     def post(self, endpoint, data=None):
         """Send a POST request."""
         url = f"{self.base_url}{endpoint}"
-        print(url)
-        print(self.headers)
-        self.headers.setdefault('Content-Type', 'application/json')
-        self.headers.setdefault('Accept', 'application/json')
-        print(self.headers)
         response = requests.post(url, headers=self.headers, data=json.dumps(data))
         return response
 
