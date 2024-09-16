@@ -17,17 +17,26 @@ To use `InstructorClient` and `CourseClient`, ensure that both classes are inclu
 from openedxclient import OpenEdxClient
 # generate token with superuser perms due to instructor requirments or give proper role in courseroles tables.
 
-`Get CSRF TOKEN`
- curl --location --request GET 'http://localhost:18000/csrf/api/v1/token'
 
-`GET access Token`:  Use this [link](https://discuss.openedx.org/t/authenticate-with-oauth-token-to-access-api-endpoints-instructor-apis/13658) for more details.
+# Add oauth application with following data
+# http://localhost:18000/admin/oauth2_provider/application/
 
-curl --location 'http://localhost:18000/oauth2/access_token' \
---form 'client_id="client_id"' \
---form 'client_secret="client_secret"' \
---form 'token_type="jwt"' \
---form 'grant_type="client_credentials"'
+## Add new client with following credentials.
 
+# "client_id": "login-service-client-id",
+# "user-id": "service username"
+# "grant_type": "password",
+# "client-type": "public"
+# "client-secret: "client_secret"
+
+# Use your user name and password with is-superuser permissions or create a role in course access roles
+
+import request
+resp = requests.post("http://localhost:18000/oauth2/access_token", data={"client_id": "login-service-client-id", "grant_type": "password","username": "staff", "password": "edx", "token_type": "JWT"})
+accesstoken = resp.json()['access_token']
+
+resp = requests.get('http://localhost:18000/csrf/api/v1/token')
+csrftoken = resp.json()['csrfToken']
 
 headers = {'Authorization': 'JWT ' + accesstoken, 'X-CSRFToken' : csrftoken}  # generate token with superuser perms due to instructor requirments.
 api_client = OpenEdxClient(base_url='http://localhost:18000', headers=headers)
