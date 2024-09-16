@@ -96,7 +96,7 @@ class OpenEdxClient:
         }
         self.accesstoken = None
 
-    def authenticate(self, username, password, client_id):
+    def authenticate(self, client_id, client_secret):
         """
         Authenticates a user and retrieves a JWT token.
         """
@@ -106,10 +106,9 @@ class OpenEdxClient:
             self.headers['X-CSRFToken'] = data.get('csrfToken')
 
         payload = {
-            'username': username,
-            'password': password,
             'client_id': client_id,
-            'grant_type': 'password',
+            'client_secret': client_secret,
+            'grant_type': 'client_credentials',
             'token_type': 'jwt'
         }
         self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
