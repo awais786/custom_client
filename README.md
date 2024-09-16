@@ -22,23 +22,22 @@ from openedxclient import OpenEdxClient
 # http://localhost:18000/admin/oauth2_provider/application/
 
 # Add new client with following credentials.
-# "client_id": "login-service-client-id",
-# "user-id": "service username"
-# "grant_type": "password",
-# "client-type": "public"
+# "client_id": "client_id",
 # "client-secret: "client_secret"
+# "user": "service username"
+# "grant_type": "client_credentials",
+# "client-type": "confidential"
 
 # Use your user name and password with is-superuser permissions or create a role in course access roles
 
 from openedxclient import OpenEdxClient
 base_url='http://localhost:18000/'
 course_id='course-v1:edx+cs222+2015_t5'
-username='staff'
-password='edx'
-client_id = 'login-service-client-id'
+client_id = 'client_id'
+client-secret= "client_secret"
 
 
-api_client = OpenEdxClient(base_url=base_url).authenticate(username=username, password=password, client_id=client_id)
+api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
 print("Accessing instructor endpoints")
 ins_client = api_client.instructor(course_id=course_id)
 print("Role members:")
