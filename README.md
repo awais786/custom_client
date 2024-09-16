@@ -6,7 +6,7 @@ This module contains specialized clients for interacting with instructor and cou
 
 - **InstructorClient**: Handles instructor-specific operations like listing tasks and managing exams.
 - **CourseClient**: Handles course-specific operations like retrieving course details, managing course content, etc.
-- Both clients dynamically load API endpoints from JSON configuration files.
+- Both clients dynamically load API endpoints from JSON configuration files. ( Right now using hardcoded json from client )
 - Simplifies interaction with various API endpoints related to instructors and courses.
 
 ## Installation
