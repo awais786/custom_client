@@ -22,9 +22,9 @@ InstructorClient
 The InstructorClient provides an easy way to perform instructor-related operations on a specific course.
 
 Constructor
-data =  {'unique_student_identifier':  user.email}  # user should be superuser due to instructor requirments.
+data =  {'unique_student_identifier':  'teststudent@gmail.com'} 
 headers = {"content-type": "application/json"}
-headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.jwt_token}
+headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.jwt_token}  # generate token with superuser perms due to instructor requirments.
 
 instructor_client = InstructorClient(course_id='course-v1:edX+DemoX+T2024')
 # List tasks for a course
