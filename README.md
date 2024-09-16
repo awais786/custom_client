@@ -36,6 +36,8 @@ course_id='course-v1:edx+cs222+2015_t5'
 username='staff'
 password='edx'
 client_id = 'login-service-client-id'
+
+
 api_client = OpenEdxClient(base_url=base_url).authenticate(username=username, password=password, client_id=client_id)
 print("Accessing instructor endpoints")
 ins_client = api_client.instructor(course_id=course_id)
