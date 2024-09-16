@@ -22,13 +22,17 @@ The InstructorClient provides an easy way to perform instructor-related operatio
 
 data =  {'unique_student_identifier':  'teststudent@gmail.com'} 
 headers = {"content-type": "application/json"}
-headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.jwt_token}  # generate token with superuser perms due to instructor requirments.
 
-instructor_client = InstructorClient(course_id='course-v1:edX+DemoX+T2024')
-tasks = instructor_client.list_tasks()
-url = instructor_client.get_student_progress_url(data=data, headers=headers)
+headers = {'Authorization': 'JWT ' + accesstoken, 'X-CSRFToken' : csrftoken}  # generate token with superuser perms due to instructor requirments.
+
+api_client = OpenEdxClient(base_url='http://localhost:18000', headers=headers)
+ins_client = api_client.instructor(course_id='course-v1:edx+cs222+2015_t5')
+ins_client.role_members(data={'rolename': 'instructor'})
 
 The CourseClient provides an easy way to perform course-related operations on a specific course.
 
-course_client = CourseClient(course_id='course-v1:edX+DemoX+T2024')
+course_client = api_client.course(course_id='course-v1:edx+cs222+2015_t5')
 course_client.get_course_details(headers=headers)
+
+
+
