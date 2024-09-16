@@ -17,18 +17,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Set up Python environment
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'  # Specify the Python version
+
+    # Step 3: Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install PyJWT==2.8.0 
-
-      # Step 2: Set up Python
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'  # Specify your Python version here
+        pip install -r requirements.txt
+        pip install PyJWT==2.8.0  # Add any other specific libraries if necessary
 
     # Step 4: Run tests
     - name: Run tests
       run: |
-        python -m unittest tests/client_tests.py  # Assumes tests are in the "tests" directory
+        python -m unittest tests -p '*_test.py'
