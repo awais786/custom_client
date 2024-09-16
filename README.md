@@ -17,9 +17,10 @@ To use `InstructorClient` and `CourseClient`, ensure that both classes are inclu
 from openedxclient import OpenEdxClient
 # generate token with superuser perms due to instructor requirments or give proper role in courseroles tables.
 
-```Get CSRF TOKEN
+`Get CSRF TOKEN`
  curl --location --request GET 'http://localhost:18000/csrf/api/v1/token'
-```GET access Token Use this [link](https://discuss.openedx.org/t/authenticate-with-oauth-token-to-access-api-endpoints-instructor-apis/13658) for more details.
+
+`GET access Token`:  Use this [link](https://discuss.openedx.org/t/authenticate-with-oauth-token-to-access-api-endpoints-instructor-apis/13658) for more details.
 
 curl --location 'http://localhost:18000/oauth2/access_token' \
 --form 'client_id="client_id"' \
