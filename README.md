@@ -18,19 +18,17 @@ from instructor_client import InstructorClient
 from course_client import CourseClient
 
 ## Usage
-InstructorClient
 The InstructorClient provides an easy way to perform instructor-related operations on a specific course.
 
-Constructor
 data =  {'unique_student_identifier':  'teststudent@gmail.com'} 
 headers = {"content-type": "application/json"}
 headers = {'HTTP_AUTHORIZATION': 'JWT ' + self.jwt_token}  # generate token with superuser perms due to instructor requirments.
 
 instructor_client = InstructorClient(course_id='course-v1:edX+DemoX+T2024')
-# List tasks for a course
 tasks = instructor_client.list_tasks()
 url = instructor_client.get_student_progress_url(data=data, headers=headers)
 
+The CourseClient provides an easy way to perform course-related operations on a specific course.
 
 course_client = CourseClient(course_id='course-v1:edX+DemoX+T2024')
 course_client.get_course_details(headers=headers)
