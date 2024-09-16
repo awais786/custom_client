@@ -27,7 +27,7 @@ ins_client.anonymous_ids()
 
 # The CourseClient provides an easy way to perform course-related operations on a specific course.
 course_client = api_client.course(course_id='course-v1:edx+cs222+2015_t5')
-course_client.get_course_details(headers=headers)
+course_client.get_course_details()
 
 
 
