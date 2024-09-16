@@ -25,7 +25,8 @@ INSTRUCTOR_RESOURCES = {
     },
     "student_progress_url": {
         "endpoint": "/courses/{course_id}/instructor/api/get_student_progress_url",
-        "method": "POST"
+        "method": "POST",
+        "required_data": ['unique_student_identifier']  # it has no role in coding this is just for user-readability
     }
 }
 
