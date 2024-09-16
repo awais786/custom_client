@@ -21,8 +21,7 @@ from openedxclient import OpenEdxClient
 # Add oauth application with following data
 # http://localhost:18000/admin/oauth2_provider/application/
 
-## Add new client with following credentials.
-
+# Add new client with following credentials.
 # "client_id": "login-service-client-id",
 # "user-id": "service username"
 # "grant_type": "password",
