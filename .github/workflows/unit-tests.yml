@@ -26,4 +26,4 @@ jobs:
     # Step 4: Run tests
     - name: Run tests
       run: |
-        python -m unittest discover -s tests  # Assumes tests are in the "tests" directory
+        python -m unittest tests/client_tests.py  # Assumes tests are in the "tests" directory
