@@ -31,25 +31,28 @@ from openedxclient import OpenEdxClient
 
 # Use your user name and password with is-superuser permissions or create a role in course access roles
 
-import request
-resp = requests.post("http://localhost:18000/oauth2/access_token", data={"client_id": "login-service-client-id", "grant_type": "password","username": "staff", "password": "edx", "token_type": "JWT"})
-accesstoken = resp.json()['access_token']
-
-resp = requests.get('http://localhost:18000/csrf/api/v1/token')
-csrftoken = resp.json()['csrfToken']
-
-headers = {'Authorization': 'JWT ' + accesstoken, 'X-CSRFToken' : csrftoken}  # generate token with superuser perms due to instructor requirments.
-api_client = OpenEdxClient(base_url='http://localhost:18000', headers=headers)
-
-# The InstructorClient provides an easy way to perform course-related operations on a specific course.
-ins_client = api_client.instructor(course_id='course-v1:edx+cs222+2015_t5')
-ins_client.role_members(data={'rolename': 'instructor'})
-ins_client.student_progress_url(data={'unique_student_identifier': 'staff@example.com'})
-ins_client.anonymous_ids()
-
-# The CourseClient provides an easy way to perform course-related operations on a specific course.
-course_client = api_client.course(course_id='course-v1:edx+cs222+2015_t5')
-course_client.get_course_details()
-
+from openedxclient import OpenEdxClient
+base_url='http://localhost:18000/'
+course_id='course-v1:edx+cs222+2015_t5'
+username='staff'
+password='edx'
+client_id = 'login-service-client-id'
+api_client = OpenEdxClient(base_url=base_url).authenticate(username=username, password=password, client_id=client_id)
+print("Accessing instructor endpoints")
+ins_client = api_client.instructor(course_id=course_id)
+print("Role members:")
+resp = ins_client.role_members(data={'rolename': 'instructor'})
+print(resp._content)
+print(" student_progress_url:")
+resp = ins_client.student_progress_url(data={'unique_student_identifier': 'staff@example.com'})
+print(resp._content)
+print("anonymous_ids:")
+resp = ins_client.anonymous_ids()
+print(resp._content)
+print("Accessing course endpoints")
+course_client = api_client.course(course_id=course_id)
+resp = course_client.get_course_details()
+print("course details:")
+print(resp._content)
 
 
