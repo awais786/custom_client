@@ -34,7 +34,7 @@ from openedxclient import OpenEdxClient
 base_url='http://localhost:18000/'
 course_id='course-v1:edx+cs222+2015_t5'
 client_id = 'client_id'
-client-secret= "client_secret"
+client_secret= "client_secret"
 
 
 api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
