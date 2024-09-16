@@ -3,22 +3,25 @@ This module contains client classes for interacting with Open edX platform APIs,
 Instructor and Course APIs. These clients provide a structured way to interact with various
 endpoints related to course and instructor operations using the OpenEdxClient as the base API client.
 """
+
+
 import datetime
 import json
 import jwt
 import requests
 
 # defines JSON configuration with more readable names as keys.
-# Each key has the url of the endpoint and HTTP method.
+# The json will be external files.
 
 INSTRUCTOR_RESOURCES = {
-    "tasks": {
-        "endpoint": "/courses/{course_id}/instructor/api/list_instructor_tasks",
-        "method": "POST"
+    "role_members": {
+        "endpoint": "/courses/{course_id}/instructor/api/list_course_role_members",
+        "method": "POST",
+        "required_data": ['rolename']  # it has no role in coding this is just for user-readability
     },
     "anonymous_ids": {
         "endpoint": "/courses/{course_id}/instructor/api/get_anon_ids",
-        "method": "POST"
+        "method": "POST",
     },
     "student_progress_url": {
         "endpoint": "/courses/{course_id}/instructor/api/get_student_progress_url",
@@ -81,19 +84,25 @@ class OpenEdxClient:
     within the Open edX platform. It serves as the base client that can be extended by more specific
     clients, such as `InstructorClient` and `CourseClient`, to interact with different API resources.
     """
-    def __init__(self, base_url):
+    def __init__(self, base_url, headers=None):
         self.base_url = base_url
+        self.headers = headers
 
-    def get(self, endpoint, data=None, headers=None):
+    def get(self, endpoint, data=None):
         """Send a GET request."""
         url = f"{self.base_url}{endpoint}"
-        response = requests.get(url, headers=headers, params=data)
+        response = requests.get(url, headers=self.headers, params=data)
         return response
 
-    def post(self, endpoint, data=None, headers=None):
+    def post(self, endpoint, data=None):
         """Send a POST request."""
         url = f"{self.base_url}{endpoint}"
-        response = requests.post(url, headers=headers, data=json.dumps(data))
+        print(url)
+        print(self.headers)
+        self.headers.setdefault('Content-Type', 'application/json')
+        self.headers.setdefault('Accept', 'application/json')
+        print(self.headers)
+        response = requests.post(url, headers=self.headers, data=json.dumps(data))
         return response
 
     def generate_method(self, resource_config):
@@ -117,9 +126,9 @@ class OpenEdxClient:
 
             # Handle method-specific logic
             if method == 'GET':
-                return self.get(endpoint, data=data, headers=headers)
+                return self.get(endpoint, data=data)
             elif method == 'POST':
-                return self.post(endpoint, data=data, headers=headers)
+                return self.post(endpoint, data=data)
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
 
@@ -134,4 +143,3 @@ class OpenEdxClient:
     def course(self, course_id=None):
         """Returns an instance of CourseClient."""
         return CourseClient(self, course_id)
-
