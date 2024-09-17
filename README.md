@@ -35,24 +35,32 @@ base_url='http://localhost:18000/'
 course_id='course-v1:edx+cs222+2015_t5'
 client_id = 'client_id'
 client_secret= "client_secret"
-
-
 api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
+print('************** Instructor **************')
 print("Accessing instructor endpoints")
 ins_client = api_client.instructor(course_id=course_id)
 print("Role members:")
-resp = ins_client.role_members(data={'rolename': 'instructor'})
+resp = ins_client.role_members(rolename='instructor')
 print(resp._content)
 print(" student_progress_url:")
-resp = ins_client.student_progress_url(data={'unique_student_identifier': 'staff@example.com'})
+resp = ins_client.student_progress_url(unique_student_identifier='staff@example.com')
 print(resp._content)
 print("anonymous_ids:")
 resp = ins_client.anonymous_ids()
 print(resp._content)
+print("entrance_exam_tasks:")
+resp = ins_client.entrance_exam_tasks(unique_student_identifier='staff@example.com')
+print(resp._content)
+print("register_and_enroll:")
+resp = ins_client.register_and_enroll()
+print(resp._content)
+print("email_content:")
+resp = ins_client.email_content()
+print(resp._content)
+print('************** Courses **************')
 print("Accessing course endpoints")
 course_client = api_client.course(course_id=course_id)
 resp = course_client.get_course_details()
 print("course details:")
 print(resp._content)
-
 
