@@ -35,6 +35,7 @@ base_url='http://localhost:18000/'
 course_id='course-v1:edx+cs222+2015_t5'
 client_id = 'client_id'
 client_secret= "client_secret"
+unique_student_identifier = 'staff@example.com'
 api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
 print('************** Instructor **************')
 print("Accessing instructor endpoints")
@@ -43,13 +44,13 @@ print("Role members:")
 resp = ins_client.role_members(rolename='instructor')
 print(resp._content)
 print(" student_progress_url:")
-resp = ins_client.student_progress_url(unique_student_identifier='staff@example.com')
+resp = ins_client.student_progress_url(unique_student_identifier=unique_student_identifier)
 print(resp._content)
 print("anonymous_ids:")
 resp = ins_client.anonymous_ids()
 print(resp._content)
 print("entrance_exam_tasks:")
-resp = ins_client.entrance_exam_tasks(unique_student_identifier='staff@example.com')
+resp = ins_client.entrance_exam_tasks(unique_student_identifier=unique_student_identifier)
 print(resp._content)
 print("register_and_enroll:")
 resp = ins_client.register_and_enroll()
