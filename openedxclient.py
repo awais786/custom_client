@@ -16,7 +16,7 @@ INSTRUCTOR_RESOURCES = {
     "role_members": {
         "endpoint": "/courses/{course_id}/instructor/api/list_course_role_members",
         "method": "POST",
-        "required_data": ['rolename']  # it has no role in coding this is just for user-readability
+        "require_params": ['rolename']
     },
     "anonymous_ids": {
         "endpoint": "/courses/{course_id}/instructor/api/get_anon_ids",
@@ -25,8 +25,26 @@ INSTRUCTOR_RESOURCES = {
     "student_progress_url": {
         "endpoint": "/courses/{course_id}/instructor/api/get_student_progress_url",
         "method": "POST",
-        "required_data": ['unique_student_identifier']  # it has no role in coding this is just for user-readability
-    }
+        "require_params": ['unique_student_identifier']
+    },
+    "register_and_enroll": {
+        "endpoint": "/courses/{course_id}/instructor/api/register_and_enroll_students",
+        "method": "POST",
+    },
+    "entrance_exam_tasks": {
+        "endpoint": "/courses/{course_id}/instructor/api/list_entrance_exam_instructor_tasks",
+        "method": "POST",
+        "require_params": ['unique_student_identifier']
+    },
+    "email_content": {
+        "endpoint": "/courses/{course_id}/instructor/api/list_email_content",
+        "method": "POST",
+    },
+    # "all_tasks": {
+    #     "endpoint": "/courses/{course_id}/instructor/api/list_instructor_tasks",
+    #     "method": "POST",
+    #     "optional_params": ['unique_student_identifier', 'problem_location_str']
+    # },
 }
 
 COURSE_RESOURCES = {
@@ -134,7 +152,7 @@ class OpenEdxClient:
     def post(self, endpoint, data=None):
         """Send a POST request."""
         url = f"{self.base_url}{endpoint}"
-        response = requests.post(url, headers=self.headers, data=json.dumps(data))
+        response = requests.post(url, headers=self.headers, json=data)
         return response
 
     def generate_method(self, resource_config):
@@ -153,8 +171,7 @@ class OpenEdxClient:
             endpoint_gen = endpoint_generator(api_endpoint)
             endpoint = next(endpoint_gen)  # Generate the endpoint URL
 
-            headers = kwargs.get('headers', {})
-            data = kwargs.get('data', {})
+            data = kwargs
 
             # Handle method-specific logic
             if method == 'GET':

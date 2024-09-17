@@ -2,6 +2,7 @@ import unittest
 from openedxclient import OpenEdxClient, InstructorClient
 from unittest.mock import patch, MagicMock
 
+
 class TestOpenEdxClient(unittest.TestCase):
 
     def setUp(self):
@@ -48,13 +49,13 @@ class TestOpenEdxClient(unittest.TestCase):
         mock_post.return_value = mock_response
 
         # Call the dynamically generated method for role_members
-        response = instructor_client.role_members(data={'rolename': 'instructor'})
+        response = instructor_client.role_members(rolename='instructor')
 
         # Assert that the request was made with correct endpoint and method
         mock_post.assert_called_once_with(
             f"{base_url}/courses/{course_id}/instructor/api/list_course_role_members",
             headers=edx_client.headers,
-            data='{"rolename": "instructor"}'  # Ensure payload was correctly passed
+            json={"rolename": "instructor"}  # Use `json` argument to check the payload
         )
         self.assertEqual(response.status_code, 200)
 
@@ -77,7 +78,7 @@ class TestOpenEdxClient(unittest.TestCase):
         mock_post.assert_called_once_with(
             f"{base_url}/courses/{course_id}/instructor/api/get_anon_ids",
             headers=edx_client.headers,
-            data='{}'  # No additional data sent
+            json={}  # No additional data sent
         )
         self.assertEqual(response.status_code, 200)
 
@@ -94,15 +95,16 @@ class TestOpenEdxClient(unittest.TestCase):
         mock_post.return_value = mock_response
 
         # Call the dynamically generated method for student_progress_url
-        response = instructor_client.student_progress_url(data={'unique_student_identifier': '12345'})
+        response = instructor_client.student_progress_url(unique_student_identifier='awais')
 
         # Assert that the request was made with correct endpoint and method
         mock_post.assert_called_once_with(
             f"{base_url}/courses/{course_id}/instructor/api/get_student_progress_url",
             headers=edx_client.headers,
-            data='{"unique_student_identifier": "12345"}'
+            json={"unique_student_identifier": "awais"}  # Ensure payload was correctly passed as JSON
         )
         self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
