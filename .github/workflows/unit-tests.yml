@@ -29,13 +29,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ./mockserver/testapp/requirements.txt 
 
-      # Step 4: Wait for the Postgres service to be healthy
-      - name: Wait for Postgres
-        run: |
-          while ! pg_isready -h localhost -U userdb -d mydb; do
-            sleep 1
-          done
-
       # Step 5: Apply database migrations
       - name: Apply database migrations
         run: |
