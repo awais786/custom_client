@@ -20,6 +20,8 @@ from openedxclient import OpenEdxClient
 
 # Add oauth application with following data
 # http://localhost:18000/admin/oauth2_provider/application/
+# Ensure that the service username has is_superuser=True or create a role in the course access roles to enable testing.
+
 
 # Add new client with following credentials.
 # "client_id": "client_id",
@@ -28,12 +30,23 @@ from openedxclient import OpenEdxClient
 # "grant_type": "client_credentials",
 # "client-type": "confidential"
 
+
+# For Local Testing with sample django app.
+
 # For testing purposes, instead of using mocking, a sample Django app has been added with a few available endpoints.
 # To test the client locally, you'll need to set up two environments:
 # One environment for running the Django server.
 # Another for executing the relevant commands.
-# Ensure that the service username has is_superuser=True or create a role in the course access roles to enable testing.
 
+# One terminal run this
+```make requirements```
+# make runserver
+
+# 2nd terminal run this
+`make runclient`
+
+# It will run the following commands from a script. but if you have any other live server
+# change the baseurl and params.
 
 from openedxclient import OpenEdxClient
 base_url='http://localhost:8000/'
