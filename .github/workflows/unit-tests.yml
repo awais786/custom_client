@@ -31,15 +31,15 @@ jobs:
         pip install requests
         pip install django==4.2
 
-    # Step 4: Run tests
-    - name: Run tests
+    - name: Run Tests'
       env:
-        SECRET_KEY: secret
+        SECRET_KEY: 69tgugtg%^fgJO&*&
         DB_NAME: mydb
         DB_USER: userdb
         DB_PASSWORD: password
         DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
         DEBUG_MODE: False
+        TIME_ZONE: Africa/Bangui
+        CACHE_KEY_PREFIX: Halo
       run: |
-        python ./mockserver/manage.py migrate
-        python ./mockserver/manage.py runserver 127.0.0.1:8000
+        python ./mockserver/manage.py runserver
