@@ -14,7 +14,7 @@ jobs:
     services:
       # Define the Django service to run on the test server
       django:
-        image: python:3.12
+        image: python:3.11
         ports:
           - 8000:8000
         options: --health-cmd "curl --silent --fail http://localhost:8000 || exit 1" --health-interval 10s --health-timeout 5s --health-retries 3
