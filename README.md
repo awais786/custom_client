@@ -14,14 +14,9 @@ This module contains specialized clients for interacting with instructor and cou
 To use `InstructorClient` and `CourseClient`, ensure that both classes are included in your project along with their dependency, `BaseClient`.
 
 ```python
-from openedxclient import OpenEdxClient
 # generate token with superuser perms due to instructor requirments or give proper role in courseroles tables.
-
-
 # Add oauth application with following data
 # http://localhost:18000/admin/oauth2_provider/application/
-# Ensure that the service username has is_superuser=True or create a role in the course access roles to enable testing.
-
 
 # Add new client with following credentials.
 # "client_id": "client_id",
@@ -31,9 +26,8 @@ from openedxclient import OpenEdxClient
 # "client-type": "confidential"
 
 
-# You can test this locally without any external service.
-
-# For testing purposes, a sample Django app has been added with few endpoints.
+# You can test this locally without any external service without doing above steps.
+# For testing purposes, a sample Django app has been added with few endpoints in side mockserver folder.
 # To test the client locally, you'll need to set up two environments:
 
 # one environment for running the Django server.
