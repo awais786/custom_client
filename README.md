@@ -47,6 +47,7 @@ from openedxclient import OpenEdxClient
 
 # It will run the following commands from a script. but if you have any other live server
 # change the baseurl and params.
+#. script added here mockserver/check_client.py.
 
 from openedxclient import OpenEdxClient
 base_url='http://localhost:8000/'
