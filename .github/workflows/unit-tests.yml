@@ -50,8 +50,7 @@ jobs:
           DB_PASSWORD: password
           DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
           DEBUG_MODE: False
-          TIME_ZONE: Africa/Bangui
           CACHE_KEY_PREFIX: Halo
         run: |
-          cd mockserver && python -m unittest testapp.test_client.py
+          cd mockserver && python -m unittest testapp.test_client
 
