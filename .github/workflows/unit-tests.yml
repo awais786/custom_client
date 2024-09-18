@@ -34,4 +34,5 @@ jobs:
     # Step 4: Run tests
     - name: Run tests
       run: |
+        cd mockserver
         python manage.py runserver
