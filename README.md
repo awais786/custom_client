@@ -31,19 +31,20 @@ from openedxclient import OpenEdxClient
 # "client-type": "confidential"
 
 
-# For Local Testing with sample django app.
+# You can test this locally without any external service.
 
-# For testing purposes, instead of using mocking, a sample Django app has been added with a few available endpoints.
+# For testing purposes, a sample Django app has been added with few endpoints.
 # To test the client locally, you'll need to set up two environments:
-# One environment for running the Django server.
-# Another for executing the relevant commands.
+
+# one environment for running the Django server.
+# Another for executing the test script
 
 # One terminal run this
-```make requirements```
-# make runserver
+  make requirements
+  make runserver
 
 # 2nd terminal run this
-`make runclient`
+  make runclient
 
 # It will run the following commands from a script. but if you have any other live server
 # change the baseurl and params.
