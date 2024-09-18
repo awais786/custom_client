@@ -52,5 +52,6 @@ jobs:
           DEBUG_MODE: False
           CACHE_KEY_PREFIX: Halo
         run: |
+          export PYTHONPATH=$PYTHONPATH:.
           cd mockserver && python -m unittest testapp.test_client
 
