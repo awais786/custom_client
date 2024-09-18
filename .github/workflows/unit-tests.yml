@@ -60,4 +60,4 @@ jobs:
         TIME_ZONE: Africa/Bangui
         CACHE_KEY_PREFIX: Halo
       run: |
-        python ./mockserver/manage.py test
+        python -m unittest testapp/test_client.py
