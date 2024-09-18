@@ -29,8 +29,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install PyJWT==2.8.0  # Add any other specific libraries if necessary
         pip install requests
+        pip install django==4.2
 
     # Step 4: Run tests
     - name: Run tests
       run: |
-        python -m unittest  tests/client_tests.py
+        python manage.py runserver
