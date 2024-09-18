@@ -20,6 +20,8 @@ from openedxclient import OpenEdxClient
 
 # Add oauth application with following data
 # http://localhost:18000/admin/oauth2_provider/application/
+# Ensure that the service username has is_superuser=True or create a role in the course access roles to enable testing.
+
 
 # Add new client with following credentials.
 # "client_id": "client_id",
@@ -28,13 +30,31 @@ from openedxclient import OpenEdxClient
 # "grant_type": "client_credentials",
 # "client-type": "confidential"
 
-# service username must be is-superuser=True or create a role in course access roles.
+
+# For Local Testing with sample django app.
+
+# For testing purposes, instead of using mocking, a sample Django app has been added with a few available endpoints.
+# To test the client locally, you'll need to set up two environments:
+# One environment for running the Django server.
+# Another for executing the relevant commands.
+
+# One terminal run this
+```make requirements```
+# make runserver
+
+# 2nd terminal run this
+`make runclient`
+
+# It will run the following commands from a script. but if you have any other live server
+# change the baseurl and params.
+#. script added here mockserver/check_client.py.
 
 from openedxclient import OpenEdxClient
-base_url='http://localhost:18000/'
+base_url='http://localhost:8000/'
 course_id='course-v1:edx+cs222+2015_t5'
 client_id = 'client_id'
 client_secret= "client_secret"
+unique_student_identifier = 'staff@example.com'
 api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
 print('************** Instructor **************')
 print("Accessing instructor endpoints")
@@ -43,19 +63,10 @@ print("Role members:")
 resp = ins_client.role_members(rolename='instructor')
 print(resp._content)
 print(" student_progress_url:")
-resp = ins_client.student_progress_url(unique_student_identifier='staff@example.com')
+resp = ins_client.student_progress_url(unique_student_identifier=unique_student_identifier)
 print(resp._content)
 print("anonymous_ids:")
 resp = ins_client.anonymous_ids()
-print(resp._content)
-print("entrance_exam_tasks:")
-resp = ins_client.entrance_exam_tasks(unique_student_identifier='staff@example.com')
-print(resp._content)
-print("register_and_enroll:")
-resp = ins_client.register_and_enroll()
-print(resp._content)
-print("email_content:")
-resp = ins_client.email_content()
 print(resp._content)
 print('************** Courses **************')
 print("Accessing course endpoints")
@@ -63,4 +74,3 @@ course_client = api_client.course(course_id=course_id)
 resp = course_client.get_course_details()
 print("course details:")
 print(resp._content)
-

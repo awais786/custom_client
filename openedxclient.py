@@ -152,7 +152,7 @@ class OpenEdxClient:
     def post(self, endpoint, data=None):
         """Send a POST request."""
         url = f"{self.base_url}{endpoint}"
-        response = requests.post(url, headers=self.headers, json=data)
+        response = requests.post(url, headers=self.headers, data=json.dumps(data))
         return response
 
     def generate_method(self, resource_config):
