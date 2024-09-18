@@ -83,3 +83,18 @@ def get_student_progress_url(request, course_id):
         })
 
     return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
+
+@csrf_exempt
+def get_course_details(request, course_id):
+    if request.method == "GET":
+        data = {
+            "blocks_url": "http://localhost:18000/api/courses/v2/blocks/?course_id=course-v1%3Aedx%2Bcs222%2B2015_t5",
+            "effort": 'null', "end": 'null', "enrollment_start": 'null', "enrollment_end": 'null',
+            "id": "course-v1:edx+cs222+2015_t5"
+        }
+        return JsonResponse({
+            'status': 'success',
+            'course_id': course_id,  # Capture the course_id
+            'data': data  # Return all POST data
+        })

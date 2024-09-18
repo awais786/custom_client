@@ -18,6 +18,11 @@ urlpatterns = [
         name='get-student-progress-url'
     ),
     re_path(
+        rf'^api/courses/v1/courses/{COURSE_ID_PATTERN}/?$',
+        views.get_course_details,
+        name='get-course-details'
+    ),
+    re_path(
         r'^oauth2/access_token/?$',
         views.oauth_token,
         name='oauth-token'

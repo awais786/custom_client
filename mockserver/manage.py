@@ -22,4 +22,4 @@ if __name__ == "__main__":
     main()
 
 # export DJANGO_SETTINGS_MODULE="testapp.settings"
-# python -m unittest testapp/client_tests.py
+# python -m unittest testapp/tests.py
