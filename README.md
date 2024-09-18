@@ -28,10 +28,15 @@ from openedxclient import OpenEdxClient
 # "grant_type": "client_credentials",
 # "client-type": "confidential"
 
-# service username must be is-superuser=True or create a role in course access roles.
+# For testing purposes, instead of using mocking, a sample Django app has been added with a few available endpoints.
+# To test the client locally, you'll need to set up two environments:
+# One environment for running the Django server.
+# Another for executing the relevant commands.
+# Ensure that the service username has is_superuser=True or create a role in the course access roles to enable testing.
+
 
 from openedxclient import OpenEdxClient
-base_url='http://localhost:18000/'
+base_url='http://localhost:8000/'
 course_id='course-v1:edx+cs222+2015_t5'
 client_id = 'client_id'
 client_secret= "client_secret"
@@ -49,19 +54,9 @@ print(resp._content)
 print("anonymous_ids:")
 resp = ins_client.anonymous_ids()
 print(resp._content)
-print("entrance_exam_tasks:")
-resp = ins_client.entrance_exam_tasks(unique_student_identifier=unique_student_identifier)
-print(resp._content)
-print("register_and_enroll:")
-resp = ins_client.register_and_enroll()
-print(resp._content)
-print("email_content:")
-resp = ins_client.email_content()
-print(resp._content)
-print('************** Courses **************')
+rint('************** Courses **************')
 print("Accessing course endpoints")
 course_client = api_client.course(course_id=course_id)
 resp = course_client.get_course_details()
 print("course details:")
 print(resp._content)
-
