@@ -41,5 +41,5 @@ jobs:
         DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
         DEBUG_MODE: False
       run: |
-        python /mockserver/manage.py migrate
+        python ./mockserver/manage.py migrate
         python ./mockserver/manage.py runserver 127.0.0.1:8000
