@@ -52,7 +52,7 @@ jobs:
           DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
           DEBUG_MODE: False
           CACHE_KEY_PREFIX: Halo
-          DJANGO_SETTINGS_MODULE: testapp.settings
+          DJANGO_SETTINGS_MODULE: mockserver.testapp.settings
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver:$(pwd)/mockserver/testapp  # Add project root and testapp to PYTHONPATH
           pytest --maxfail=1 --disable-warnings  # Run pytest
