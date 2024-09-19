@@ -55,5 +55,5 @@ jobs:
           DJANGO_SETTINGS_MODULE: testapp.settings
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver  # Add project root to PYTHONPATH
-          cd mockserver && python -m unittest testapp.test_client
+          python -m unittest mockserver.testapp.test_client
 
