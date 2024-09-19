@@ -56,3 +56,50 @@ For testing purposes, a sample Django app has been added in the `mockserver` fol
     **Second terminal**:
    ```bash
    make run-tests
+
+
+## Script Overview
+
+The script performs the following actions:
+
+- **Authenticate** using the `OpenEdxClient` with provided credentials.
+- **Instructor Endpoints**: Fetch members of a specific role (e.g., `instructor`).
+- **Course Endpoints**: Fetch course details using the course ID.
+
+### Script Usage
+
+#### Authentication and Client Initialization
+
+```python
+from openedxclient import OpenEdxClient
+
+# Define API credentials and course information
+base_url = 'http://localhost:8000/'
+course_id = 'course-v1:edx+cs222+2015_t5'
+client_id = 'client_id'
+client_secret = 'client_secret'
+unique_student_identifier = 'staff@example.com'
+
+# Authenticate and initialize the OpenEdxClient
+api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
+
+# Interacting with Instructor Endpoints
+print('************** Instructor **************')
+print("Accessing instructor endpoints")
+ins_client = api_client.instructor(course_id=course_id)
+
+# Example: Get role members with the role 'instructor'
+print("Role members:")
+resp = ins_client.role_members(rolename='instructor')
+print(resp)
+
+
+# Interacting with Course Endpoints
+print('************** Courses **************')
+print("Accessing course endpoints")
+course_client = api_client.course(course_id=course_id)
+
+# Example: Get course details
+print("Course details:")
+resp = course_client.get_course_details()
+print(resp._content)
