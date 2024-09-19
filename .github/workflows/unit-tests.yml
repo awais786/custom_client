@@ -35,6 +35,11 @@ jobs:
         run: |
           python ./mockserver/manage.py migrate
 
+      # Step 5: Debug - List files to verify test discovery
+      - name: List files in testapp
+        run: |
+          ls -R mockserver/testapp
+          
       # Step 6: Start Django server
       - name: Start Django server
         run: |
@@ -54,6 +59,5 @@ jobs:
           CACHE_KEY_PREFIX: Halo
           DJANGO_SETTINGS_MODULE: mockserver.testapp.settings
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver:$(pwd)/mockserver/testapp:$(pwd)
-          pytest mockserver/testapp/test_clients.py --maxfail=1 --disable-warnings
-
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver:$(pwd)/custom-client
+          pytest --maxfail=1 --disable-warnings
