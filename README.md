@@ -48,4 +48,11 @@ For testing purposes, a sample Django app has been added in the `mockserver` fol
    make runserver
    
 3. Run the following client:
-    **Second terminal**:  
+    **Second terminal**:
+   ```bash
+   make actual-client-testing
+
+4. Run the tests with live django app:
+    **Second terminal**:
+   ```bash
+   make actual-client-testing

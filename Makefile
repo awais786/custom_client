@@ -3,7 +3,7 @@ requirements:
 	pip install -r ./mockserver/testapp/requirements.txt
 runserver:
 	python ./mockserver/manage.py runserver 127.0.0.1:8000
-runclient:
+actual-client-testing:
 	python ./mockserver/check_client.py
 run-tests:
 	pytest mockserver/testapp/tests.py
