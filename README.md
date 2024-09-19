@@ -1,71 +1,51 @@
 # API Clients: InstructorClient & CourseClient
 
-This module contains specialized clients for interacting with instructor and course-related operations on an API. Both `InstructorClient` and `CourseClient` inherit from a base class `BaseClient` and utilize dynamic endpoint generation from configuration files.
+This module provides specialized clients (`InstructorClient` and `CourseClient`) to interact with instructor and course-related operations on an API. Both clients inherit from a base class `BaseClient` and use dynamic endpoint generation based on configuration.
 
 ## Features
 
-- **InstructorClient**: Handles instructor-specific operations like listing tasks and managing exams.
-- **CourseClient**: Handles course-specific operations like retrieving course details, managing course content, etc.
-- Both clients dynamically load API endpoints from JSON configuration files. ( Right now using hardcoded json from client )
-- Simplifies interaction with various API endpoints related to instructors and courses.
+- **InstructorClient**: Supports instructor-specific operations such as listing tasks and managing exams.
+- **CourseClient**: Handles course-related operations, including retrieving course details and managing content.
+- Both clients dynamically load API endpoints from configuration files (currently hardcoded in the client).
+- Simplifies interactions with various instructor and course-related API endpoints.
 
 ## Installation
 
-To use `InstructorClient` and `CourseClient`, ensure that both classes are included in your project along with their dependency, `BaseClient`.
+To use `InstructorClient` and `CourseClient`, include both classes along with their dependency, `BaseClient`, in your project.
 
-```python
-# generate token with superuser perms due to instructor requirments or give proper role in courseroles tables.
-# Add oauth application with following data
-# http://localhost:18000/admin/oauth2_provider/application/
+## Setup
 
-# Add new client with following credentials.
-# "client_id": "client_id",
-# "client-secret: "client_secret"
-# "user": "service username"
-# "grant_type": "client_credentials",
-# "client-type": "confidential"
+To interact with the API, you need to authenticate with a token that has superuser permissions (for instructor actions) or assign proper roles in the `CourseRoles` table.
 
+### OAuth Client Setup
 
-# You can test this locally without any external service without doing above steps.
-# For testing purposes, a sample Django app has been added with few endpoints in side mockserver folder.
-# To test the client locally, you'll need to set up two environments:
+1. Visit the admin panel of your OAuth provider:  
+   `http://localhost:18000/admin/oauth2_provider/application/`
+   
+2. Add a new OAuth application with the following credentials:
+   - `client_id`: **client_id**
+   - `client_secret`: **client_secret**
+   - `user`: **service username**
+   - `grant_type`: `client_credentials`
+   - `client_type`: `confidential`
 
-# one environment for running the Django server.
-# Another for executing the test script
+### Local Testing
 
-# One terminal run this
-  make requirements
-  make runserver
+For testing purposes, a sample Django app has been added in the `mockserver` folder. This lets you test the clients locally without requiring any external service or the OAuth setup above.
 
-# 2nd terminal run this
-  make runclient
+#### Instructions for Local Testing
 
-# It will run the following commands from a script. but if you have any other live server
-# change the baseurl and params.
-#. script added here mockserver/check_client.py.
+1. Set up two environments:
+   - One for running the Django server.
+   - Another for executing the test script.
 
-from openedxclient import OpenEdxClient
-base_url='http://localhost:8000/'
-course_id='course-v1:edx+cs222+2015_t5'
-client_id = 'client_id'
-client_secret= "client_secret"
-unique_student_identifier = 'staff@example.com'
-api_client = OpenEdxClient(base_url=base_url).authenticate(client_id=client_id, client_secret=client_secret)
-print('************** Instructor **************')
-print("Accessing instructor endpoints")
-ins_client = api_client.instructor(course_id=course_id)
-print("Role members:")
-resp = ins_client.role_members(rolename='instructor')
-print(resp._content)
-print(" student_progress_url:")
-resp = ins_client.student_progress_url(unique_student_identifier=unique_student_identifier)
-print(resp._content)
-print("anonymous_ids:")
-resp = ins_client.anonymous_ids()
-print(resp._content)
-print('************** Courses **************')
-print("Accessing course endpoints")
-course_client = api_client.course(course_id=course_id)
-resp = course_client.get_course_details()
-print("course details:")
-print(resp._content)
+2. Run the following commands:
+
+   **First terminal**:  
+   Start the Django server:
+   ```bash
+   make requirements
+   make runserver
+   
+3. Run the following client:
+    **Second terminal**:  

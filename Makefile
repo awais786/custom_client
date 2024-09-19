@@ -5,3 +5,5 @@ runserver:
 	python ./mockserver/manage.py runserver 127.0.0.1:8000
 runclient:
 	python ./mockserver/check_client.py
+run-tests:
+	pytest mockserver/testapp/tests.py

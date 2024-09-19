@@ -4,10 +4,9 @@ Instructor and Course APIs. These clients provide a structured way to interact w
 endpoints related to course and instructor operations using the OpenEdxClient as the base API client.
 """
 
-import datetime
 import json
-import jwt
 import requests
+import inspect
 
 # defines JSON configuration with more readable names as keys.
 # The json will be external files.
@@ -159,10 +158,14 @@ class OpenEdxClient:
         """
         Generate a method based on the resource configuration (endpoint, method).
         """
+        api_endpoint = resource_config.get('endpoint')
+        method = resource_config.get('method')
+        required_params = resource_config.get('require_params', [])
 
         def api_call(*args, **kwargs):
-            api_endpoint = resource_config.get('endpoint')
-            method = resource_config.get('method')
+            missing_params = [param for param in required_params if param not in kwargs]
+            if missing_params:
+                raise ValueError(f"Missing required parameters: {', '.join(missing_params)}")
 
             if not api_endpoint or not method:
                 raise ValueError(f"Invalid resource configuration: {resource_config}")
@@ -180,6 +183,14 @@ class OpenEdxClient:
                 return self.post(endpoint, data=data)
             else:
                 raise ValueError(f"Unsupported HTTP method: {method}")
+
+        signature = inspect.Signature(
+            parameters=[
+                inspect.Parameter(param, inspect.Parameter.KEYWORD_ONLY) for param in required_params
+            ]
+        )
+        api_call.__signature__ = signature
+        api_call.__doc__ = f"Automatically generated method for {method} {api_endpoint}"
 
         return api_call
 
