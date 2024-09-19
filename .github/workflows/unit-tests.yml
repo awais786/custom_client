@@ -54,6 +54,6 @@ jobs:
           CACHE_KEY_PREFIX: Halo
           DJANGO_SETTINGS_MODULE: testapp.settings
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)  # Add project root to PYTHONPATH
-          pytest mockserver.testapp.test_client
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver:$(pwd)/mockserver/testapp  # Add project root and testapp to PYTHONPATH
+          pytest --maxfail=1 --disable-warnings  # Run pytest
 
