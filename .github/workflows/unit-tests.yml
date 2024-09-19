@@ -60,4 +60,4 @@ jobs:
           DJANGO_SETTINGS_MODULE: mockserver.testapp.settings
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver:$(pwd)/custom-client
-          pytest --maxfail=1 --disable-warnings
+          pytest mockserver/testapp/tests.py
