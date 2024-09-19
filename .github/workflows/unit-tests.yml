@@ -28,6 +28,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r ./mockserver/testapp/requirements.txt 
+          pip install pytest pytest-django
 
       # Step 5: Apply database migrations
       - name: Apply database migrations
