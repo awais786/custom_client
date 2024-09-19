@@ -53,6 +53,6 @@ jobs:
           CACHE_KEY_PREFIX: Halo
           DJANGO_SETTINGS_MODULE: testapp.settings
         run: |
-          export PYTHONPATH=$PYTHONPATH:.
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/mockserver  # Add project root to PYTHONPATH
           cd mockserver && python -m unittest testapp.test_client
 
