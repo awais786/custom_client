@@ -55,4 +55,4 @@ For testing purposes, a sample Django app has been added in the `mockserver` fol
 4. Run the tests with live django app:
     **Second terminal**:
    ```bash
-   make actual-client-testing
+   make run-tests
