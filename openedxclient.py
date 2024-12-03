@@ -7,44 +7,74 @@ endpoints related to course and instructor operations using the OpenEdxClient as
 import json
 import requests
 import inspect
+import sys
+import os
+import yaml
+import os
+import json
 
-# defines JSON configuration with more readable names as keys.
-# The json will be external files.
 
-INSTRUCTOR_RESOURCES = {
-    "role_members": {
-        "endpoint": "/courses/{course_id}/instructor/api/list_course_role_members",
-        "method": "POST",
-        "require_params": ['rolename']
-    },
-    "anonymous_ids": {
-        "endpoint": "/courses/{course_id}/instructor/api/get_anon_ids",
-        "method": "POST",
-    },
-    "student_progress_url": {
-        "endpoint": "/courses/{course_id}/instructor/api/get_student_progress_url",
-        "method": "POST",
-        "require_params": ['unique_student_identifier']
-    },
-    "register_and_enroll": {
-        "endpoint": "/courses/{course_id}/instructor/api/register_and_enroll_students",
-        "method": "POST",
-    },
-    "entrance_exam_tasks": {
-        "endpoint": "/courses/{course_id}/instructor/api/list_entrance_exam_instructor_tasks",
-        "method": "POST",
-        "require_params": ['unique_student_identifier']
-    },
-    "email_content": {
-        "endpoint": "/courses/{course_id}/instructor/api/list_email_content",
-        "method": "POST",
-    },
-    # "all_tasks": {
-    #     "endpoint": "/courses/{course_id}/instructor/api/list_instructor_tasks",
-    #     "method": "POST",
-    #     "optional_params": ['unique_student_identifier', 'problem_location_str']
-    # },
-}
+def parse_file(file_path):
+    # Check if the file exists
+    if not os.path.exists(yaml_file):
+        raise FileNotFoundError(f"File not found: {yaml_file}")
+
+    try:
+        # Load the YAML file
+        with open(file_path, 'r', encoding='utf-8') as file:
+            if file_path.endswith('.yaml') or file_path.endswith('.yml'):
+                # Parse YAML file
+                openapi_data = yaml.safe_load(file)
+            elif file_path.endswith('.json'):
+                # Parse JSON file
+                openapi_data = json.load(file)
+            else:
+                raise ValueError("Unsupported file format. Only .yaml and .json are supported.")
+
+        # Extract 'paths'
+        paths = openapi_data.get('paths', {})
+        if not paths:
+            print("No 'paths' key found in the YAML file.")
+            return []
+
+        return paths
+
+    except yaml.YAMLError as e:
+        raise ValueError(f"Error parsing YAML file: {e}")
+
+
+def get_instructor_links(paths):
+    # Parse instructor-related links with method types
+    # Parse instructor-related links with method types and format them
+    # Parse instructor-related links with method types and format them
+    instructor_resources = {}
+    for path, methods in paths.items():
+        if path.startswith("/courses/{course_id}/instructor/"):
+            for method, details in methods.items():
+                # Extract the endpoint key (the part after /instructor/api/)
+                path_segments = path.split('/')
+                endpoint_key = path_segments[-1]  # The last segment (after /instructor/api/)
+
+                # Create a resource dictionary for the path
+                resource = {
+                    "endpoint": path,
+                    "method": method.upper(),  # Convert method to uppercase (e.g., POST, GET)
+                }
+
+                # Add 'require_params' if available from the details
+                parameters = details.get("parameters", [])
+                require_params = [param["name"] for param in parameters if param["in"] == "query"]
+                if require_params:
+                    resource["require_params"] = require_params
+
+                # Add this resource to the dictionary using the extracted endpoint key
+                instructor_resources[endpoint_key] = resource
+
+    return instructor_resources
+
+
+yaml_file = "nov_28.yaml"
+data = parse_file(yaml_file)
 
 COURSE_RESOURCES = {
     "get_course_details": {
@@ -82,8 +112,17 @@ class InstructorClient(BaseClient):
     with instructor endpoints defined in the INSTRUCTOR_RESOURCES configuration.
     """
 
-    def __init__(self, api_client, course_id):
-        super().__init__(api_client, course_id, INSTRUCTOR_RESOURCES)
+    def __init__(self, api_client, file_path, course_id):
+        data = parse_file(file_path)
+        self.instructor_links = get_instructor_links(data)
+
+        # Generate a dynamic docstring for the client
+        endpoint_docs = "\n".join([
+            f"- `{key}`: {value['method']} {value['endpoint']}"
+            for key, value in self.instructor_links.items()
+        ])
+        self.__doc__ += f"\n\nAvailable Endpoints:\n{endpoint_docs}"
+        super().__init__(api_client, course_id, self.instructor_links)
 
 
 class CourseClient(BaseClient):
@@ -130,7 +169,6 @@ class OpenEdxClient:
         }
         self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         response = requests.post(f"{self.base_url}/oauth2/access_token", headers=self.headers, data=payload)
-
         if response.status_code == 200:
             data = response.json()
             self.accesstoken = data.get('access_token')
@@ -194,11 +232,11 @@ class OpenEdxClient:
 
         return api_call
 
-    def instructor(self, course_id):
+    def instructor(self, file_path, course_id):
         """
         Method to return an instance of InstructorClient.
         """
-        return InstructorClient(self, course_id)
+        return InstructorClient(self, file_path, course_id)
 
     def course(self, course_id=None):
         """Returns an instance of CourseClient."""
